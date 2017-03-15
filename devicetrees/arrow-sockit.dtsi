@@ -1,0 +1,38 @@
+/ {
+	fragment@0 {
+	        __overlay__ {
+	                fpga-bridges = <&fpga_bridge0 &fpga_bridge1 &fpga_bridge2 &fpga_bridge3>;
+	                
+			clk_0: clk_0 {
+				compatible = "fixed-clock";
+				#clock-cells;
+				clock-frequency;
+				clock-output-names = "clk_0-clk";
+			};
+			
+                        leds: leds {
+				compatible = "gpio-leds";
+
+				led_fpga0: fpga0 {
+					label = "fpga_led0";
+					gpios = <&led_pio 0 1>;
+				};
+
+				led_fpga1: fpga1 {
+					label = "fpga_led1";
+					gpios = <&led_pio 1 1>;
+				};
+
+				led_fpga2: fpga2 {
+					label = "fpga_led2";
+					gpios = <&led_pio 2 1>;
+				};
+
+				led_fpga3: fpga3 {
+					label = "fpga_led3";
+					gpios = <&led_pio 3 1>;
+				};
+			};
+		};
+	};
+};
