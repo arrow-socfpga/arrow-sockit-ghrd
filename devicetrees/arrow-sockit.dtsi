@@ -9,6 +9,13 @@
 				clock-frequency;
 				clock-output-names = "clk_0-clk";
 			};
+
+			pll_stream: pll_stream {
+				compatible = "fixed-clock";
+				#clock-cells;
+				clock-frequency;
+				clock-output-names = "pll_stream-clk";
+			};
 			
                         leds: leds {
 				compatible = "gpio-leds";
@@ -32,6 +39,21 @@
 					label = "fpga_led3";
 					gpios = <&led_pio 3 1>;
 				};
+			};
+		};
+	};
+
+	// Altera VIP Suite Frame Reader
+	fragment@1 {
+		target-path = "/soc/base-fpga-region";
+		__overlay__ {
+			alt_vip_vfr_vga: vip@0x100010100 {
+				compatible = "altr,vip-frame-reader-1.0";
+				reg = <0x00000001 0x00010100 0x00000080>;
+				max-width = <1920>;
+				max-height = <1080>;
+				bits-per-color = <8>;
+				mem-word-width = <128>;
 			};
 		};
 	};

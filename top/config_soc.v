@@ -16,6 +16,6 @@
 //`define bitec_dvi true
 //`define ddr3 true
 //`define audio true
-//`define vga	true
+`define vga	true
 //`define audio true
 //`define HSMC_XCVR true

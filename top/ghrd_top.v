@@ -109,8 +109,9 @@
 //
 //	Description: Upgrade to release 16.1 
 //					 Quartus: removed source/probe megawizard instance
+//					 Quartus: Added vga signals to support 1080p video
 //					 Qsys: Added source/probe component
-
+//					 Qsys: Added VIP video chain to support 1080p video
 //
 // ============================================================================
 // Qsys System :
@@ -235,7 +236,7 @@ module ghrd_top (
 	output [3:0]   user_led_fpga,       //
 	input	 [3:0]   user_pb_fpga,        //
   	input  	wire  irda_rxd,				// IRDA Receive LED   
-  	output  	wire  fan_ctrl				// control for fan
+  	output  	wire  fan_ctrl,				// control for fan
 `endif
 	
 `ifdef ddr3
@@ -278,7 +279,7 @@ module ghrd_top (
    output   wire  [7:0] vga_g,			// Green
    output   wire  [7:0] vga_b,			// Blue	
    output 	wire  vga_blank_n,			// Composite Blank Control
-   output 	wire  vga_sync_n,				// Composite Synch Control  	  
+   output 	wire  vga_sync_n				// Composite Synch Control  	  
 `endif
 
 `ifdef audio
@@ -342,7 +343,7 @@ module ghrd_top (
   assign stm_hw_events    = {{18{1'b0}}, user_dipsw_fpga, fpga_led_internal, user_pb_fpga};
   
 	 
-
+wire [7:0]  vga_color;  
 	 
  
     soc_system u0 (
@@ -432,10 +433,38 @@ module ghrd_top (
 		  .issp_hps_resets_source                (hps_reset_req),		  
 		  .hps_0_f2h_cold_reset_req_reset_n      (~hps_cold_reset),            			 	 
 		  .hps_0_f2h_warm_reset_req_reset_n      (~hps_warm_reset),            			 	 
-		  .hps_0_f2h_debug_reset_req_reset_n     (~hps_debug_reset)
+		  .hps_0_f2h_debug_reset_req_reset_n     (~hps_debug_reset),
 
+		   //itc
+		  .alt_vip_itc_0_clocked_video_vid_clk         (clk_65),         					 	 
+        .alt_vip_itc_0_clocked_video_vid_data        ({vid_r,vid_g,vid_b}),        		 
+        .alt_vip_itc_0_clocked_video_underflow       (),                           		 
+        .alt_vip_itc_0_clocked_video_vid_datavalid   (vid_datavalid),                   
+        .alt_vip_itc_0_clocked_video_vid_v_sync      (vid_v_sync),      					 
+        .alt_vip_itc_0_clocked_video_vid_h_sync      (vid_h_sync),      					 
+        .alt_vip_itc_0_clocked_video_vid_f           (),           							 
+        .alt_vip_itc_0_clocked_video_vid_h           (),           							 
+        .alt_vip_itc_0_clocked_video_vid_v           (),            							 
+  
+// fpga_DDR3
+
+        
+		  .clock_bridge_65_out_clk_clk              	  (clk_65)              			 	 		  
     );
 	 
+wire               clk_65;
+wire [7:0]         vid_r,vid_g,vid_b;
+wire               vid_v_sync ;
+wire               vid_h_sync ;
+wire               vid_datavalid;	
+
+assign   vga_blank_n          =     1'b1;
+assign   vga_sync_n           =     1'b0;	
+assign   vga_clk              =     clk_65;
+assign  {vga_b,vga_g,vga_r}   =     {vid_b,vid_g,vid_r};
+assign   vga_vs               =     vid_v_sync;
+assign   vga_hs               =     vid_h_sync; 
+      
 
 altera_edge_detector pulse_cold_reset (
   .clk       (clk_bot1),
