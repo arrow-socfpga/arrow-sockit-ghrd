@@ -4,6 +4,7 @@
  * in cooperation with the nios2 community <nios2-dev@lists.rocketboards.org>
  */
 /dts-v1/ /plugin/;
+/include/ "arrow-sockit.dtsi"
 
 / {
 
