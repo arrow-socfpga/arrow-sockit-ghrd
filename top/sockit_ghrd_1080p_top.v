@@ -112,6 +112,7 @@
 //					 Quartus: Added vga signals to support 1080p video
 //					 Qsys: Added source/probe component
 //					 Qsys: Added VIP video chain to support 1080p video
+// 							    
 //
 // ============================================================================
 // Qsys System :
