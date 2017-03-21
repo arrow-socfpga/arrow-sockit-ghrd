@@ -1,4 +1,4 @@
-fatload mmc 0:1 $fpgadata output_files/soc_system.rbf;
+fatload mmc 0:1 $fpgadata output_files/sockit_ghrd_1080p.rbf;
 fpga load 0 $fpgadata $filesize;
 setenv fdtimage ;
 run bridge_enable_handoff;
