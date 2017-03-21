@@ -1,4 +1,5 @@
 # ignore Quartus II generated files
+*.bak
 *.json
 *.rpt
 *_pin_model_dump.txt
