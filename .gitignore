@@ -1,6 +1,7 @@
 # ignore Quartus II generated files
 *.bak
 *.json
+*.qws
 *.rpt
 *_pin_model_dump.txt
 *_summary.csv
@@ -28,7 +29,6 @@ incremental_db/
 greybox_tmp/
 simulation/
 # this next folder should match the base name of the .qsys file
-soc_system/
 sockit_ghrd_1080p_system/
 software/preloader/uboot-socfpga/
 stamp/
