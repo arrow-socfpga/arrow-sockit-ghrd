@@ -2,16 +2,36 @@
 	fragment@0 {
 	        __overlay__ {
 	                fpga-bridges = <&fpga_bridge0 &fpga_bridge1 &fpga_bridge2 &fpga_bridge3>;
-	                
+
 			clk_0: clk_0 {
 				compatible = "fixed-clock";
 				#clock-cells;
 				clock-frequency;
 				clock-output-names = "clk_0-clk";
 			};
-			
-                        leds: leds {
+
+			leds: leds {
 				compatible = "gpio-leds";
+
+				led_hps0: hps0 {
+					label = "hps_led0";
+					gpios = <&portb 27 1>;
+				};
+
+				led_hps1: hps1 {
+					label = "hps_led1";
+					gpios = <&portb 26 1>;
+				};
+
+				led_hps2: hps2 {
+					label = "hps_led2";
+					gpios = <&portb 25 1>;
+				};
+
+				led_hps3: hps3 {
+					label = "hps_led3";
+					gpios = <&portb 24 1>;
+				};
 
 				led_fpga0: fpga0 {
 					label = "fpga_led0";
@@ -33,6 +53,14 @@
 					gpios = <&led_pio 3 1>;
 				};
 			};
+		};
+	};
+
+	// Enable HPS gpio1 LEDs
+	fragment@1 {
+		target-path = "/soc/gpio@ff709000";
+		__overlay__ {
+			status = "okay";
 		};
 	};
 };
