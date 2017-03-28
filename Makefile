@@ -72,7 +72,8 @@ default: help
 
 ################################################
 .PHONY: all
-all: preloader uboot dts dtb sd-fat
+# SJK 20170313 all: preloader uboot dts dtb sd-fat
+all: preloader uboot sd-fat
 
 ifeq ($(HAVE_QUARTUS),1)
 all: sof rbf
@@ -547,59 +548,60 @@ sd-update-preloader-uboot: sd-update-preloader sd-update-uboot
 ################################################
 # Device Tree
 
-DTS.SOPC2DTS := sopc2dts
-DTS.DTC := dtc
+#  SJK 20170313  removed dtc and dtb until issues resolved
+# DTS.SOPC2DTS := sopc2dts
+# DTS.DTC := dtc
 
-DTS.BOARDINFO ?= $(QSYS_BASE)_board_info.xml
-DTS.COMMON ?= hps_common_board_info.xml
+# DTS.BOARDINFO ?= $(QSYS_BASE)_board_info.xml
+# DTS.COMMON ?= hps_common_board_info.xml
 
-DTS.EXTRA_DEPS += $(DTS.BOARDINFO) $(DTS.COMMON)
+# DTS.EXTRA_DEPS += $(DTS.BOARDINFO) $(DTS.COMMON)
 
-DTS.SOPC2DTS_ARGS += $(if $(DTS.BOARDINFO),--board $(DTS.BOARDINFO))
-DTS.SOPC2DTS_ARGS += $(if $(DTS.COMMON),--board $(DTS.COMMON))
-DTS.SOPC2DTS_ARGS += --bridge-removal all
-DTS.SOPC2DTS_ARGS += --clocks
+# DTS.SOPC2DTS_ARGS += $(if $(DTS.BOARDINFO),--board $(DTS.BOARDINFO))
+# DTS.SOPC2DTS_ARGS += $(if $(DTS.COMMON),--board $(DTS.COMMON))
+# DTS.SOPC2DTS_ARGS += --bridge-removal all
+# DTS.SOPC2DTS_ARGS += --clocks
 
-define dts.sopc2dts
-$(if $(DTS.BOARDINFO),,$(warning WARNING: DTS BoardInfo file was not specified or found))
-$(DTS.SOPC2DTS) --input $1 --output $2 $3 $(DTS.SOPC2DTS_ARGS)
-endef
+# define dts.sopc2dts
+# $(if $(DTS.BOARDINFO),,$(warning WARNING: DTS BoardInfo file was not specified or found))
+# $(DTS.SOPC2DTS) --input $1 --output $2 $3 $(DTS.SOPC2DTS_ARGS)
+# endef
 
 
 # Device Tree Source (dts)
-DEVICE_TREE_SOURCE := $(patsubst %.sopcinfo,%.dts,$(QSYS_SOPCINFO))
+# DEVICE_TREE_SOURCE := $(patsubst %.sopcinfo,%.dts,$(QSYS_SOPCINFO))
 
-HELP_TARGETS += dts
-dts.HELP := Generate a device tree for this qsys design
+# SJK 20170313 HELP_TARGETS += dts
+# dts.HELP := Generate a device tree for this qsys design
 
-.PHONY: dts
-dts: $(DEVICE_TREE_SOURCE)
+# .PHONY: dts
+# dts: $(DEVICE_TREE_SOURCE)
 
-ifeq ($(HAVE_QSYS),1)
-$(DEVICE_TREE_SOURCE): $(QSYS_STAMP)
-endif
+# ifeq ($(HAVE_QSYS),1)
+# $(DEVICE_TREE_SOURCE): $(QSYS_STAMP)
+# endif
 
-$(DEVICE_TREE_SOURCE): %.dts: %.sopcinfo $(DTS.EXTRA_DEPS)
-	$(call dts.sopc2dts,$<,$@)
+# $(DEVICE_TREE_SOURCE): %.dts: %.sopcinfo $(DTS.EXTRA_DEPS)
+# 	$(call dts.sopc2dts,$<,$@)
 
 
 # Device Tree Blob (dtb)
-DEVICE_TREE_BLOB := $(patsubst %.sopcinfo,%.dtb,$(QSYS_SOPCINFO))
+# DEVICE_TREE_BLOB := $(patsubst %.sopcinfo,%.dtb,$(QSYS_SOPCINFO))
 
-HELP_TARGETS += dtb
-dtb.HELP := Generate a device tree blob for this qsys design
+# HELP_TARGETS += dtb
+# dtb.HELP := Generate a device tree blob for this qsys design
 
-.PHONY: dtb
-dtb: $(DEVICE_TREE_BLOB)
+# .PHONY: dtb
+# dtb: $(DEVICE_TREE_BLOB)
 
-ifeq ($(HAVE_QSYS),1)
-$(DEVICE_TREE_BLOB): $(QSYS_STAMP)
-endif
+# ifeq ($(HAVE_QSYS),1)
+# $(DEVICE_TREE_BLOB): $(QSYS_STAMP)
+# endif
 
-$(DEVICE_TREE_BLOB): %.dtb: %.dts
-	$(DTS.DTC) -I dts -O dtb -o $@ $<
+# $(DEVICE_TREE_BLOB): %.dtb: %.dts
+# 	$(DTS.DTC) -I dts -O dtb -o $@ $<
 
-SCRUB_CLEAN_FILES += $(DEVICE_TREE_SOURCE) $(DEVICE_TREE_BLOB)
+# SCRUB_CLEAN_FILES += $(DEVICE_TREE_SOURCE) $(DEVICE_TREE_BLOB)
 
 ################################################
 
