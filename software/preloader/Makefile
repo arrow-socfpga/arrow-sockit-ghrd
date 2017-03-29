@@ -13,7 +13,7 @@
 # Generated Variables
 #
 
-PRELOADER_SETTINGS_DIR := ../../hps_isw_handoff/soc_system_hps_0
+PRELOADER_SETTINGS_DIR := ../../hps_isw_handoff/sockit_ghrd_hps_0
 
 TGZ := $(SOCEDS_DEST_ROOT)/host_tools/altera/preloader/uboot-socfpga.tar.gz
 
