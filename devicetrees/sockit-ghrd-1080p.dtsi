@@ -2,7 +2,7 @@
 	fragment@0 {
 	        __overlay__ {
 	                fpga-bridges = <&fpga_bridge0 &fpga_bridge1 &fpga_bridge2 &fpga_bridge3>;
-	                
+
 			clk_0: clk_0 {
 				compatible = "fixed-clock";
 				#clock-cells;
@@ -16,9 +16,29 @@
 				clock-frequency;
 				clock-output-names = "pll_stream-clk";
 			};
-			
-                        leds: leds {
+
+			leds: leds {
 				compatible = "gpio-leds";
+
+				led_hps0: hps0 {
+					label = "hps_led0";
+					gpios = <&portb 27 1>;
+				};
+
+				led_hps1: hps1 {
+					label = "hps_led1";
+					gpios = <&portb 26 1>;
+				};
+
+				led_hps2: hps2 {
+					label = "hps_led2";
+					gpios = <&portb 25 1>;
+				};
+
+				led_hps3: hps3 {
+					label = "hps_led3";
+					gpios = <&portb 24 1>;
+				};
 
 				led_fpga0: fpga0 {
 					label = "fpga_led0";
@@ -43,20 +63,11 @@
 		};
 	};
 
-/*
-	// Altera VIP Suite Frame Reader
+	// Enable HPS gpio1 LEDs
 	fragment@1 {
-		target-path = "/soc/base-fpga-region";
+		target-path = "/soc/gpio@ff709000";
 		__overlay__ {
-			alt_vip_vfr_vga: vip@0x100010100 {
-				compatible = "altr,vip-frame-reader-1.0";
-				reg = <0x00000001 0x00010100 0x00000080>;
-				max-width = <1920>;
-				max-height = <1080>;
-				bits-per-color = <8>;
-				mem-word-width = <128>;
-			};
+			status = "okay";
 		};
 	};
-*/
 };
