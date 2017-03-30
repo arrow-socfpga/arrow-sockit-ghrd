@@ -3,6 +3,7 @@
 *.rpt
 *_pin_model_dump.txt
 *_summary.csv
+*description.txt
 hps_sdram_p0_all_pins.txt
 hps_sdram_p0_summary.csv
 output_files/*.rpt
