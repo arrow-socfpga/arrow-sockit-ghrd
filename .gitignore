@@ -3,6 +3,7 @@
 *.json
 *.qws
 *.rpt
+*description.txt
 *_pin_model_dump.txt
 *_summary.csv
 hps_sdram_p0_all_pins.txt
@@ -15,8 +16,8 @@ output_files/*.jdi
 output_files/*.pin
 output_files/*.sld
 sd_fat.tar.gz
-soc_system.dtb
-soc_system.dts
+#soc_system.dtb
+#soc_system.dts
 software/preloader/preloader-mkpimage.bin
 software/preloader/preloader.ds
 software/preloader/settings.bsp
