@@ -347,7 +347,7 @@ module sockit_ghrd_1080p_top (
 wire [7:0]  vga_color;  
 	 
  
-    sockit_ghrd_1080p_system u0 (
+    sockit_ghrd_1080p u0 (
         .clk_clk                               (clk_bot1),                          	 
         .reset_reset_n                         (hps_fpga_reset_n),                      
         .memory_mem_a                          (memory_mem_a),                          

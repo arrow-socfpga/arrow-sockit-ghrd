@@ -41,7 +41,7 @@ set_global_assignment -name DEVICE 5CSXFC6D6F31C6
 set_global_assignment -name TOP_LEVEL_ENTITY sockit_ghrd_1080p_top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 16.1.2
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "15:53:22  MARCH 21, 2017"
-set_global_assignment -name LAST_QUARTUS_VERSION "16.1.2 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "16.1.2 Standard Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
@@ -1171,12 +1171,13 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to fpga_resetn
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to clk_i2c_sdat
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to clk_i2c_sclk
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to vga_blank_n
-set_global_assignment -name QIP_FILE sockit_ghrd_1080p_system/synthesis/sockit_ghrd_1080p_system.qip
+set_global_assignment -name QIP_FILE sockit_ghrd_1080p/synthesis/sockit_ghrd_1080p.qip
 set_global_assignment -name VERILOG_FILE top/config_soc.v
 set_global_assignment -name VERILOG_FILE top/sockit_ghrd_1080p_top.v
 set_global_assignment -name VERILOG_FILE ip/edge_detect/altera_edge_detector.v
 set_global_assignment -name SIGNALTAP_FILE cti_tapping.stp
 set_global_assignment -name SDC_FILE sockit_ghrd_1080p_timing.sdc
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[0] -to "soc_system:u0|hps_0_f2h_stm_hw_events_stm_hwevents[0]" -section_id auto_signaltap_0
 set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[1] -to "soc_system:u0|hps_0_f2h_stm_hw_events_stm_hwevents[10]" -section_id auto_signaltap_0
 set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[2] -to "soc_system:u0|hps_0_f2h_stm_hw_events_stm_hwevents[11]" -section_id auto_signaltap_0
@@ -1233,5 +1234,4 @@ set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[24] -t
 set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[25] -to "soc_system:u0|hps_0_f2h_stm_hw_events_stm_hwevents[7]" -section_id auto_signaltap_0
 set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[26] -to "soc_system:u0|hps_0_f2h_stm_hw_events_stm_hwevents[8]" -section_id auto_signaltap_0
 set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[27] -to "soc_system:u0|hps_0_f2h_stm_hw_events_stm_hwevents[9]" -section_id auto_signaltap_0
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 set_global_assignment -name SLD_FILE db/cti_tapping_auto_stripped.stp
