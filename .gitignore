@@ -30,7 +30,7 @@ incremental_db/
 greybox_tmp/
 simulation/
 # this next folder should match the base name of the .qsys file
-sockit_ghrd_1080p_system/
+sockit_ghrd_1080p/
 software/preloader/uboot-socfpga/
 stamp/
 timing/
