@@ -73,7 +73,7 @@
  * Handoff files must provide user option whether to
  * enable watchdog during preloader execution phase
  */
-#define CONFIG_PRELOADER_WATCHDOG_ENABLE	(0)
+#define CONFIG_PRELOADER_WATCHDOG_ENABLE	(1)
 
 /*
  * Handoff files must provide user option whether to enable

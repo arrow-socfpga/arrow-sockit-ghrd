@@ -1,0 +1,167 @@
+/*
+ * The MIT License (MIT)
+ * Copyright (c) 2017 Intel Corporation
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include "sockit_ghrd.h"
+#include "dt-bindings/interrupt-controller/irq.h"
+
+/*
+ * Redefine the macros from soc_system.h into shorter macros and more useful
+ * values that we can use directly in the devicetree definition.
+ */
+#define JTAG_UART_BASE		HPS_0_ARM_A9_0_JTAG_UART_BASE
+#define JTAG_UART_SPAN		HPS_0_ARM_A9_0_JTAG_UART_SPAN
+#define JTAG_UART_IRQ		(HPS_0_JTAG_UART_IRQ + 72 - 32)
+
+#define SYSID_QSYS_BASE		HPS_0_ARM_A9_0_SYSID_QSYS_BASE
+#define SYSID_QSYS_SPAN		HPS_0_ARM_A9_0_SYSID_QSYS_SPAN
+
+#define LED_PIO_BASE		HPS_0_ARM_A9_0_LED_PIO_BASE
+#define LED_PIO_SPAN		HPS_0_ARM_A9_0_LED_PIO_SPAN
+#define LED_PIO_WIDTH		HPS_0_ARM_A9_0_LED_PIO_DATA_WIDTH
+
+#define DIPSW_PIO_BASE		HPS_0_ARM_A9_0_DIPSW_PIO_BASE
+#define DIPSW_PIO_SPAN		HPS_0_ARM_A9_0_DIPSW_PIO_SPAN
+#define DIPSW_PIO_IRQ		(HPS_0_DIPSW_PIO_IRQ + 72 - 32)
+#define DIPSW_PIO_WIDTH		HPS_0_ARM_A9_0_DIPSW_PIO_DATA_WIDTH
+
+#define BUTTON_PIO_BASE		HPS_0_ARM_A9_0_BUTTON_PIO_BASE
+#define BUTTON_PIO_SPAN		HPS_0_ARM_A9_0_BUTTON_PIO_SPAN
+#define BUTTON_PIO_IRQ		(HPS_0_BUTTON_PIO_IRQ + 72 - 32)
+#define BUTTON_PIO_WIDTH	HPS_0_ARM_A9_0_BUTTON_PIO_DATA_WIDTH
+
+#define ILC_BASE		HPS_0_ARM_A9_0_ILC_BASE
+#define ILC_SPAN		HPS_0_ARM_A9_0_ILC_SPAN
+
+/ {
+fragment@0 {
+
+target-path = "/soc/base-fpga-region";
+
+#address-cells = <0x1>;
+#size-cells = <0x1>;
+
+__overlay__ {
+
+	firmware-name = "sockit_ghrd_1080p.rbf";
+
+	#address-cells = <0x2>;
+	#size-cells = <0x1>;
+
+	fpga-bridges = <&fpga_bridge0 &fpga_bridge1>;
+
+	ranges = <
+		JTAG_UART_BASE	0	JTAG_UART_BASE	JTAG_UART_SPAN
+		SYSID_QSYS_BASE	0	SYSID_QSYS_BASE	SYSID_QSYS_SPAN
+		LED_PIO_BASE	0	LED_PIO_BASE	LED_PIO_SPAN
+		DIPSW_PIO_BASE	0	DIPSW_PIO_BASE	DIPSW_PIO_SPAN
+		BUTTON_PIO_BASE	0	BUTTON_PIO_BASE	BUTTON_PIO_SPAN
+		ILC_BASE	0	ILC_BASE	ILC_SPAN
+		>;
+
+	JTAG_UART: JTAG_UART@JTAG_UART_BASE,0 {
+		compatible = "altr,juart-1.0";
+		reg = <JTAG_UART_BASE 0 JTAG_UART_SPAN>;
+		interrupts = <0 JTAG_UART_IRQ IRQ_TYPE_LEVEL_HIGH>;
+	};
+
+	SYSID_QSYS: SYSID_QSYS@SYSID_QSYS_BASE,0 {
+		compatible = "altr,sysid-1.0";
+		reg = <SYSID_QSYS_BASE 0 SYSID_QSYS_SPAN>;
+	};
+
+	LED_PIO: LED_PIO@LED_PIO_BASE,0 {
+		compatible = "altr,pio-1.0";
+		reg = <LED_PIO_BASE 0 LED_PIO_SPAN>;
+		altr,ngpio = <LED_PIO_WIDTH>;
+		#gpio-cells = <2>;
+		gpio-controller;
+	};
+
+	DIPSW_PIO: DIPSW_PIO@DIPSW_PIO_BASE,0 {
+		compatible = "altr,pio-1.0";
+		reg = <DIPSW_PIO_BASE 0 DIPSW_PIO_SPAN>;
+		interrupts = <0 DIPSW_PIO_IRQ IRQ_TYPE_LEVEL_HIGH>;
+		altr,ngpio = <DIPSW_PIO_WIDTH>;
+		#gpio-cells = <2>;
+		gpio-controller;
+		#interrupt-cells = <1>;
+		interrupt-controller;
+		altr,interrupt-type = <IRQ_TYPE_EDGE_BOTH>;
+	};
+
+	BUTTON_PIO: BUTTON_PIO@BUTTON_PIO_BASE,0 {
+		compatible = "altr,pio-1.0";
+		reg = <BUTTON_PIO_BASE 0 BUTTON_PIO_SPAN>;
+		interrupts = <0 BUTTON_PIO_IRQ IRQ_TYPE_LEVEL_HIGH>;
+		altr,ngpio = <BUTTON_PIO_WIDTH>;
+		#gpio-cells = <2>;
+		gpio-controller;
+		#interrupt-cells = <1>;
+		interrupt-controller;
+		altr,interrupt-type = <IRQ_TYPE_EDGE_FALLING>;
+	};
+
+	ILC: ILC@ILC_BASE,0 {
+		compatible = "altr,ilc-1.0";
+		reg = <ILC_BASE 0 ILC_SPAN>;
+		interrupt-parent = <&intc>;
+		interrupts = <
+			0	DIPSW_PIO_IRQ	IRQ_TYPE_LEVEL_HIGH
+			0	BUTTON_PIO_IRQ	IRQ_TYPE_LEVEL_HIGH
+			0	JTAG_UART_IRQ	IRQ_TYPE_LEVEL_HIGH
+			>;
+		altr,sw-fifo-depth = <32>;
+	};
+
+	leds {
+
+		compatible = "gpio-leds";
+
+		fpga0 {
+			label = "fpga_led0";
+			gpios = <&LED_PIO 0 1>;
+		};
+
+		fpga1 {
+			label = "fpga_led1";
+			gpios = <&LED_PIO 1 1>;
+		};
+
+		fpga2 {
+			label = "fpga_led2";
+			gpios = <&LED_PIO 2 1>;
+		};
+
+		fpga3 {
+			label = "fpga_led3";
+			gpios = <&LED_PIO 3 1>;
+		};
+	};
+
+}; // __overlay__
+
+}; // fragment@0
+}; // /
