@@ -65,7 +65,7 @@ target-path = "/soc/base-fpga-region";
 
 __overlay__ {
 
-	firmware-name = "sockit_ghrd_1080p.rbf";
+	firmware-name = "sockit_ghrd.rbf";
 
 	#address-cells = <0x2>;
 	#size-cells = <0x1>;
